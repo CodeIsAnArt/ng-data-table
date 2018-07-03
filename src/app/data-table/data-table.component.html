@@ -1,0 +1,59 @@
+<div class="parent">
+  <div class="table-parent">
+    <table class="table table-condensed table-bordered table-hover center-elements table-fixed">
+
+      <thead>
+      <tr class="table-header">
+        <th *ngFor="let header of tableHeadersList" class="center-elements table-header">{{header}}</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <tr>
+      <tr *ngFor="let item of paginatedtableData(); let rowNumber = index">
+        <td *ngFor="let itemDetail of tableDataDetails; let columnNumber = index">
+          <span *ngIf="!itemDetail.type">{{concatenatedName(item, itemDetail)}}</span>
+          <span *ngIf="itemDetail.type === 'id'">{{itemId(rowNumber)}}</span>
+          <input [type]="itemDetail.subType" *ngIf="itemDetail.type === 'input' && itemDetail.subType!='radio'"
+                 (change)="updateData($event,rowNumber,columnNumber)"
+                 [ngModel]="tableData[currentPage*pageSize + rowNumber][tableDataDetails[columnNumber].name]"
+                 [checked]="tableData[currentPage*pageSize + rowNumber][tableDataDetails[columnNumber].name]">
+          <input [type]="itemDetail.subType" *ngIf="itemDetail.type === 'input' && itemDetail.subType ==='radio'"
+                 name="radio" (change)="updateData($event,rowNumber,columnNumber)"
+                 [checked]="tableData[currentPage*pageSize + rowNumber][tableDataDetails[columnNumber].name]">
+          <button [type]="itemDetail.subType" *ngIf="itemDetail.type === 'button'" (click)="buttonClickEmitter($event,rowNumber, columnNumber)">{{itemDetail.elementDesc}}</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!--Pagination-->
+  <nav aria-label="..." class="center-elements pagination-bar">
+    <ul class="pagination pagination-custom">
+      <li [class.disabled]="currentPage===0" (click)="navigateUsingPreviousOrNext('previous')">
+        <span class="page-link">Previous</span>
+      </li>
+      <li *ngFor="let count of counter(); let i = index" [class.active]="currentPage === (i)" (click)="jumpToAPage(i)">
+        <a class="page-link" href="#">{{i + 1}}</a>
+      </li>
+      <li *ngIf="scrollTracker>5">
+        <a class="page-link" href="#">...</a>
+      </li>
+      <li *ngIf="numberOfPages>5" [class.active]="currentPage === (scrollTracker)" (click)="jumpToAPage(scrollTracker)">
+        <a class="page-link" href="#">{{1 + scrollTracker}}</a>
+      </li>
+      <li *ngIf="scrollTracker< (numberOfPages-2)">
+        <a class="page-link" href="#">...</a>
+      </li>
+      <li *ngIf="numberOfPages>6" [class.active]="currentPage === (numberOfPages-1)"
+          (click)="jumpToAPage(numberOfPages-1)">
+        <a class="page-link" href="#">{{numberOfPages}}</a>
+      </li>
+      <li [class.disabled]="currentPage===numberOfPages-1" (click)="navigateUsingPreviousOrNext('next')">
+        <span class="page-link">Next</span>
+      </li>
+    </ul>
+  </nav>
+  <!--Pagination-->
+</div>

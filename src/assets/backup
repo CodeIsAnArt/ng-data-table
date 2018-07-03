@@ -1,0 +1,22 @@
+public mockList = [{
+    qdwdqwd: 'qdwdqwd',
+    gergerge: 'gergerge',
+    geyjhrur: 'geyjhrur',
+    rthrthrthrt: { test: { rthrthrthrt: 'dasdadasd' } },
+    rhrhrhrh: 'rhrhrhrh',
+    rhrhrh: 'rhrhrh',
+  }, {
+    qdwdqwd: 'qdwdqwd',
+    gergerge: 'gergerge',
+    geyjhrur: 'geyjhrur',
+    rthrthrthrt: { test: { rthrthrthrt: 'dasdadasd' } },
+    rhrhrhrh: 'rhrhrhrh',
+    rhrhrh: 'rhrhrh',
+  }, {
+    qdwdqwd: 'qdwdqwd',
+    gergerge: 'gergerge',
+    geyjhrur: 'geyjhrur',
+    rthrthrthrt: { test: { rthrthrthrt: 'dasdadasd' } },
+    rhrhrhrh: 'rhrhrhrh',
+    rhrhrh: 'rhrhrh',
+  },];

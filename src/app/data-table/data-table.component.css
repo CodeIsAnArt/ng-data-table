@@ -1,0 +1,36 @@
+.center-elements{
+    text-align: center;
+  }
+  .pagination-bar{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+  }
+  /* .table-header{
+    position: absolute;
+    top: 20px;
+    height: 20px;
+    left: 0;
+  } */
+.parent{
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+.table-parent{
+  overflow: auto;
+  position: relative;
+  height: calc(100% - 40px);
+}
+.table-header{
+
+}
+.pagination-custom{
+  margin:0;
+}
+
+
+
+
+
