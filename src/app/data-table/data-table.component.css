@@ -13,6 +13,9 @@
     height: 20px;
     left: 0;
   } */
+.table-fixed{
+  margin-top: 50px;
+}
 .parent{
     position: relative;
     height: 100%;
@@ -25,7 +28,8 @@
   height: calc(100% - 40px);
 }
 .table-header{
-
+  height: 50px;
+  vertical-align: middle;
 }
 .pagination-custom{
   margin:0;

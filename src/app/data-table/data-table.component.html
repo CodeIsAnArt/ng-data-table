@@ -1,16 +1,20 @@
 <div class="parent">
-  <div class="table-parent">
-    <table class="table table-condensed table-bordered table-hover center-elements table-fixed">
+  <div class="table-parent" id = "tableParent">
 
-      <thead>
-      <tr class="table-header">
-        <th *ngFor="let header of tableHeadersList" class="center-elements table-header"><div>{{header}}</div></th>
-      </tr>
-      </thead>
+    <table class="table table-condensed table-bordered table-hover center-elements table-fixed">
+    <thead class="table-header" >
+    <tr class="table-header-row" #thead >
+      <th *ngFor="let header of tableHeadersList" appDataTable [thead]="thead" [trow]="trow" class="center-elements table-header">{{header}}</th>
+    </tr>
+    </thead>
+    </table>
+
+
+    <table class="table table-condensed table-bordered table-hover center-elements table-fixed">
 
       <tbody>
       <tr>
-      <tr *ngFor="let item of paginatedtableData(); let rowNumber = index">
+      <tr *ngFor="let item of paginatedtableData(); let rowNumber = index" #trow>
         <td *ngFor="let itemDetail of tableDataDetails; let columnNumber = index">
           <span *ngIf="!itemDetail.type">{{concatenatedName(item, itemDetail)}}</span>
           <span *ngIf="itemDetail.type === 'id'">{{itemId(rowNumber)}}</span>
