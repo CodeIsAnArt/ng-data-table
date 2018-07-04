@@ -21,10 +21,8 @@ export class DataTableComponent implements OnInit, OnChanges, AfterViewInit {
   @Output() buttonClickEvent = new EventEmitter();
   @Input() pageSize;
 
-  public numberOfPages: number;
-
   // Required Variables
-
+  public numberOfPages: number;
   public currentPage;
   public scrollTracker;
   public lastSelectedRadio: number;
@@ -34,18 +32,14 @@ export class DataTableComponent implements OnInit, OnChanges, AfterViewInit {
   public subscription;
   public columnWidthsTemp = [];
 
-  // Temp Variable
-
-
   ngOnInit(): void {
     this.currentPage = 0;
     this.scrollTracker = 5;
     this.columnWidths = new Array(this.tableDataDetails.length);
-    this.setTableWidth = new Subject();
-    this.subscription = this.setTableWidth.pipe(debounceTime(1000)).subscribe(finalArray => {
-      this.columnWidths = finalArray;
-    });
-    // this.numberOfPages = (this.tableData.length) / this.pageSize;
+    // this.setTableWidth = new Subject();
+    // this.subscription = this.setTableWidth.pipe(debounceTime(1000)).subscribe(finalArray => {
+    //   this.columnWidths = finalArray;
+    // });
   }
 
   ngOnChanges() {
@@ -53,7 +47,6 @@ export class DataTableComponent implements OnInit, OnChanges, AfterViewInit {
     if (this.tableData) {
       this.numberOfPages = Math.ceil((this.tableData.length) / this.pageSize);
     }
-
   }
 
   ngAfterViewInit() {

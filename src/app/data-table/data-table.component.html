@@ -1,35 +1,30 @@
 <div class="parent">
-<div class="flex-header">
-      <div *ngFor="let header of tableHeadersList;let headerPosition=index"
-       class="center-elements table-header"
-       [style.width.px]="columnWidths[headerPosition]">
-        {{header}}</div>
-      </div>
   <div class="table-parent" id="tableParent">
 
     <table class="table table-condensed table-bordered table-hover center-elements data-table">
-      <thead>
-        <tr>
-          <th *ngFor="let header of tableHeadersList;let headerPositionOri=index"
-           class="center-elements table-header"  appDataTable [(columnWidths)]="columnWidths"
-            [setTableWidth] = "setTableWidth"
-           [headerPosition]="headerPositionOri"
-              [columnWidthsTemp] = "columnWidthsTemp"
-      >{{header}}</th>
-        </tr>
+      <thead class="table-header">
+      <tr class="table-header-row">
+        <th *ngFor="let header of tableHeadersList;let headerPositionOri=index" class="vertical-align">{{header}}
+        </th>
+      </tr>
       </thead>
 
       <tbody>
-        <tr *ngFor="let item of paginatedtableData(); let rowNumber = index" #trow>
-          <td *ngFor="let itemDetail of tableDataDetails; let columnNumber = index">
-            <span *ngIf="!itemDetail.type">{{concatenatedName(item, itemDetail)}}</span>
-            <span *ngIf="itemDetail.type === 'id'">{{itemId(rowNumber)}}</span>
-            <input [type]="itemDetail.subType" *ngIf="itemDetail.type === 'input' && itemDetail.subType!='radio'" (change)="updateData($event,rowNumber,columnNumber)"
-              [ngModel]="tableData[currentPage*pageSize + rowNumber][tableDataDetails[columnNumber].name]" [checked]="tableData[currentPage*pageSize + rowNumber][tableDataDetails[columnNumber].name]">
-            <input [type]="itemDetail.subType" *ngIf="itemDetail.type === 'input' && itemDetail.subType ==='radio'" name="radio" (change)="updateData($event,rowNumber,columnNumber)"
-              [checked]="tableData[currentPage*pageSize + rowNumber][tableDataDetails[columnNumber].name]">
-            <button class="link-like" [type]="itemDetail.subType" *ngIf="itemDetail.type === 'button'" (click)="buttonClickEmitter($event,rowNumber, columnNumber)">{{itemDetail.elementDesc}}</button>
-          </td>
+      <tr *ngFor="let item of paginatedtableData(); let rowNumber = index" #trow>
+        <td *ngFor="let itemDetail of tableDataDetails; let columnNumber = index">
+          <span *ngIf="!itemDetail.type">{{concatenatedName(item, itemDetail)}}</span>
+          <span *ngIf="itemDetail.type === 'id'">{{itemId(rowNumber)}}</span>
+          <input [type]="itemDetail.subType" *ngIf="itemDetail.type === 'input' && itemDetail.subType!='radio'"
+                 (change)="updateData($event,rowNumber,columnNumber)"
+                 [ngModel]="tableData[currentPage*pageSize + rowNumber][tableDataDetails[columnNumber].name]"
+                 [checked]="tableData[currentPage*pageSize + rowNumber][tableDataDetails[columnNumber].name]">
+          <input [type]="itemDetail.subType" *ngIf="itemDetail.type === 'input' && itemDetail.subType ==='radio'"
+                 name="radio" (change)="updateData($event,rowNumber,columnNumber)"
+                 [checked]="tableData[currentPage*pageSize + rowNumber][tableDataDetails[columnNumber].name]">
+          <button class="link-like" [type]="itemDetail.subType" *ngIf="itemDetail.type === 'button'"
+                  (click)="buttonClickEmitter($event,rowNumber, columnNumber)">{{itemDetail.elementDesc}}
+          </button>
+        </td>
       </tbody>
     </table>
   </div>
@@ -52,7 +47,8 @@
       <li *ngIf="scrollTracker< (numberOfPages-2)">
         <a class="page-link" href="#">...</a>
       </li>
-      <li *ngIf="numberOfPages>6" [class.active]="currentPage === (numberOfPages-1)" (click)="jumpToAPage(numberOfPages-1)">
+      <li *ngIf="numberOfPages>6" [class.active]="currentPage === (numberOfPages-1)"
+          (click)="jumpToAPage(numberOfPages-1)">
         <a class="page-link" href="#">{{numberOfPages}}</a>
       </li>
       <li [class.disabled]="currentPage===numberOfPages-1" (click)="navigateUsingPreviousOrNext('next')">
