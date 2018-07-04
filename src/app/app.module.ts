@@ -5,12 +5,14 @@ import { HttpClientModule} from '@angular/common/http';
 import { DataTableComponent } from './data-table/data-table.component';
 import { DataTableDirective } from './data-table.directive';
 import {FormsModule} from '@angular/forms';
+import { SetTableHeaderWidthDirective } from './set-table-header-width.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     DataTableComponent,
-    DataTableDirective
+    DataTableDirective,
+    SetTableHeaderWidthDirective
   ],
   imports: [
     BrowserModule,

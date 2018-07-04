@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {delay} from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { delay } from 'rxjs/operators';
 
 
 @Component({
@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
   public url = 'http://www.json-generator.com/api/json/get/cfTGUZqOZK?indent=2';
   public obs = this.http.get(this.url);
   public delayedObservable = this.http.get(this.url).pipe(delay(5000));
-  public pageSize = 30;
+  public pageSize = 50;
   public tableHeadersList: String[] = ['Id', 'Allot Acc', 'Dep Ind', 'Fac Desc', 'IpaId', 'RCD', 'Enter', 'Submit'];
   public tableDataDetails = [{
     'name': 'id',
@@ -30,9 +30,10 @@ export class AppComponent implements OnInit {
     'root': ''
   }, {
     'name': 'setOrNotCheckbox',
-    'type': 'input',
-    'subType': 'checkbox',
-    'root': ''
+    'type': 'button',
+    'subType': 'button',
+    'root': '',
+    'elementDesc': 'Edit'
   }, {
     'name': 'company',
     'type': '',
@@ -60,9 +61,7 @@ export class AppComponent implements OnInit {
     this.obs.subscribe(data => {
       this.tableData = data;
     });
-    this.delayedObservable.subscribe(data => {
-      this.tableData = [...this.tableData, ...data];
-    });
+
   }
 
   constructor(private http: HttpClient) {

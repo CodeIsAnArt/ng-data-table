@@ -13,14 +13,21 @@
     height: 20px;
     left: 0;
   } */
+.data-table{
+  margin-bottom: 0;
+}
 .table-fixed{
-  margin-top: 50px;
+  position: absolute;
+  top:0;
+  height: 50px;
+      z-index: 1;
 }
 .parent{
     position: relative;
     height: 100%;
     width: 100%;
   padding: 10px;
+  padding-top:0px;
 }
 .table-parent{
   overflow: auto;
@@ -30,6 +37,10 @@
 .table-header{
   height: 50px;
   vertical-align: middle;
+  background-color: rgb(115, 121, 123);
+  font-size: 14px;
+  color: white;
+  font-weight: bold;
 }
 .pagination-custom{
   margin:0;
@@ -39,4 +50,9 @@
   border: 0;
   text-decoration: underline;
 }
-
+.head-single-line{
+  display:flex;
+}
+.flex-header{
+  display:flex;
+}

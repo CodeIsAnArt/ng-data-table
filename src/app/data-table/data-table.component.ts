@@ -1,12 +1,14 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild, AfterViewInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {Observable, Subject} from 'rxjs';
+import {debounceTime, map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-data-table',
   templateUrl: './data-table.component.html',
   styleUrls: ['./data-table.component.css']
 })
-export class DataTableComponent implements OnInit, OnChanges {
+export class DataTableComponent implements OnInit, OnChanges, AfterViewInit {
 
   constructor() {
   }
@@ -18,6 +20,7 @@ export class DataTableComponent implements OnInit, OnChanges {
   @Output() tableDataChange = new EventEmitter();
   @Output() buttonClickEvent = new EventEmitter();
   @Input() pageSize;
+
   public numberOfPages: number;
 
   // Required Variables
@@ -26,6 +29,10 @@ export class DataTableComponent implements OnInit, OnChanges {
   public scrollTracker;
   public lastSelectedRadio: number;
   public selectedCheckBoxes: number[] = [];
+  public columnWidths: number[];
+  public setTableWidth: Subject<number[]>;
+  public subscription;
+  public columnWidthsTemp = [];
 
   // Temp Variable
 
@@ -33,7 +40,11 @@ export class DataTableComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.currentPage = 0;
     this.scrollTracker = 5;
-
+    this.columnWidths = new Array(this.tableDataDetails.length);
+    this.setTableWidth = new Subject();
+    this.subscription = this.setTableWidth.pipe(debounceTime(1000)).subscribe(finalArray => {
+      this.columnWidths = finalArray;
+    });
     // this.numberOfPages = (this.tableData.length) / this.pageSize;
   }
 
@@ -42,8 +53,12 @@ export class DataTableComponent implements OnInit, OnChanges {
     if (this.tableData) {
       this.numberOfPages = Math.ceil((this.tableData.length) / this.pageSize);
     }
+
   }
 
+  ngAfterViewInit() {
+
+  }
 
   concatenatedName(item, detailsOfProperties) {
     const valueProperty = detailsOfProperties.name;
@@ -115,7 +130,10 @@ export class DataTableComponent implements OnInit, OnChanges {
       if (!isNaN(this.lastSelectedRadio) && this.lastSelectedRadio !== selectedObjectNumber) {
         this.tableData[this.lastSelectedRadio][propertyName] = false;
       }
+      console.log(this.lastSelectedRadio);
+      console.log(selectedObjectNumber);
       this.lastSelectedRadio = selectedObjectNumber;
+
     } else
     // Handle Checkbox Toggles
     if (this.tableDataDetails[columnNumber].subType === 'checkbox') {
@@ -133,8 +151,8 @@ export class DataTableComponent implements OnInit, OnChanges {
 
   buttonClickEmitter(event, rowNumber, columnNumber) {
     const emittedObject = {
-      selectedObject : (this.currentPage * this.pageSize + rowNumber),
-      actionName : this.tableDataDetails[columnNumber].elementDesc
+      selectedObject: (this.currentPage * this.pageSize + rowNumber),
+      actionName: this.tableDataDetails[columnNumber].elementDesc
     };
     this.buttonClickEvent.emit(emittedObject);
   }
