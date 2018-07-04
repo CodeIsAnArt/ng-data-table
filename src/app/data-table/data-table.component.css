@@ -17,6 +17,7 @@
     position: relative;
     height: 100%;
     width: 100%;
+  padding: 10px;
 }
 .table-parent{
   overflow: auto;
@@ -29,8 +30,9 @@
 .pagination-custom{
   margin:0;
 }
-
-
-
-
+.link-like{
+  background: inherit;
+  border: 0;
+  text-decoration: underline;
+}
 

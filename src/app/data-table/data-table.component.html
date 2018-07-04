@@ -4,7 +4,7 @@
 
       <thead>
       <tr class="table-header">
-        <th *ngFor="let header of tableHeadersList" class="center-elements table-header">{{header}}</th>
+        <th *ngFor="let header of tableHeadersList" class="center-elements table-header"><div>{{header}}</div></th>
       </tr>
       </thead>
 
@@ -21,7 +21,7 @@
           <input [type]="itemDetail.subType" *ngIf="itemDetail.type === 'input' && itemDetail.subType ==='radio'"
                  name="radio" (change)="updateData($event,rowNumber,columnNumber)"
                  [checked]="tableData[currentPage*pageSize + rowNumber][tableDataDetails[columnNumber].name]">
-          <button [type]="itemDetail.subType" *ngIf="itemDetail.type === 'button'" (click)="buttonClickEmitter($event,rowNumber, columnNumber)">{{itemDetail.elementDesc}}</button>
+          <button class="link-like" [type]="itemDetail.subType" *ngIf="itemDetail.type === 'button'" (click)="buttonClickEmitter($event,rowNumber, columnNumber)">{{itemDetail.elementDesc}}</button>
         </td>
       </tr>
       </tbody>

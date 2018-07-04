@@ -4,12 +4,13 @@
     [(tableData)]="tableData"
     [tableDataDetails]="tableDataDetails"
     [tableHeadersList]="tableHeadersList"
-    (buttonClickEvent)="ButtonListener($event)">
+    (buttonClickEvent)="ButtonListener($event)"
+    [pageSize]="pageSize">
   </app-data-table>
 </div>
-<div class="topright topright2">
-  <div *ngFor="let a of tableData;let i=index">R:{{i}}: {{a.inpval}}</div>
-</div>
-<div class="topright">
-  <div *ngFor="let a of tableData;let j= index">C{{j}}: {{a.setOrNotCheckbox}}</div>
-</div>
+<!--<div class="topright topright2">-->
+  <!--<div *ngFor="let a of tableData;let i=index">R:{{i}}: {{a.inpval}}</div>-->
+<!--</div>-->
+<!--<div class="topright">-->
+  <!--<div *ngFor="let a of tableData;let j= index">C{{j}}: {{a.setOrNotCheckbox}}</div>-->
+<!--</div>-->

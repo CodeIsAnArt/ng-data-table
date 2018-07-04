@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
   public url = 'http://www.json-generator.com/api/json/get/cfTGUZqOZK?indent=2';
   public obs = this.http.get(this.url);
   public delayedObservable = this.http.get(this.url).pipe(delay(5000));
-
+  public pageSize = 30;
   public tableHeadersList: String[] = ['Id', 'Allot Acc', 'Dep Ind', 'Fac Desc', 'IpaId', 'RCD', 'Enter', 'Submit'];
   public tableDataDetails = [{
     'name': 'id',

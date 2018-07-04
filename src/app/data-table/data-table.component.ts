@@ -17,7 +17,7 @@ export class DataTableComponent implements OnInit, OnChanges {
   @Input() tableHeadersList;
   @Output() tableDataChange = new EventEmitter();
   @Output() buttonClickEvent = new EventEmitter();
-  public pageSize: number;
+  @Input() pageSize;
   public numberOfPages: number;
 
   // Required Variables
@@ -33,7 +33,6 @@ export class DataTableComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.currentPage = 0;
     this.scrollTracker = 5;
-    this.pageSize = 13;
 
     // this.numberOfPages = (this.tableData.length) / this.pageSize;
   }
