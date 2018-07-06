@@ -2,55 +2,77 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild, Af
 import {HttpClient} from '@angular/common/http';
 import {Observable, Subject} from 'rxjs';
 import {debounceTime, map} from 'rxjs/operators';
+import {PagerService} from '../pagerservice';
 
 @Component({
   selector: 'app-data-table',
   templateUrl: './data-table.component.html',
   styleUrls: ['./data-table.component.css']
 })
-export class DataTableComponent implements OnInit, OnChanges, AfterViewInit {
+export class DataTableComponent implements OnInit, OnChanges {
 
-  constructor() {
+  constructor(private http: HttpClient,
+              private  pagerService: PagerService) {
   }
 
   // TBB Variable
   @Input() tableDataDetails;
-  @Input() tableData;
   @Input() tableHeadersList;
   @Output() tableDataChange = new EventEmitter();
   @Output() buttonClickEvent = new EventEmitter();
   @Input() pageSize;
+  @Input() paginationUrl;
 
   // Required Variables
   public numberOfPages: number;
-  public currentPage;
-  public scrollTracker;
+  public tableData;
   public lastSelectedRadio: number;
   public selectedCheckBoxes: number[] = [];
   public columnWidths: number[];
   public setTableWidth: Subject<number[]>;
   public subscription;
   public columnWidthsTemp = [];
+  public finalUrl: string;
+  public serverPageSize = 100;
+  public endOfData = false;
+  public currentServerPage = 1;
+  public paginationDetails: any = {};
+  public paginatedItems: any[];
+  public currentPage = 1;
 
   ngOnInit(): void {
-    this.currentPage = 0;
-    this.scrollTracker = 5;
+
     this.columnWidths = new Array(this.tableDataDetails.length);
+    this.tableData = [];
     // this.setTableWidth = new Subject();
     // this.subscription = this.setTableWidth.pipe(debounceTime(1000)).subscribe(finalArray => {
     //   this.columnWidths = finalArray;
     // });
+    this.getTableDataObservable();
+
   }
 
   ngOnChanges() {
     // only run when property "data" changed
-    if (this.tableData) {
-      this.numberOfPages = Math.ceil((this.tableData.length) / this.pageSize);
-    }
+    // if (this.tableData) {
+    //   this.numberOfPages = Math.ceil((this.tableData.length) / this.pageSize);
+    // }
   }
 
-  ngAfterViewInit() {
+  getTableDataObservable() {
+    this.setPaginationLimits((this.currentServerPage), this.serverPageSize);
+    this.http.get(this.paginationUrl).subscribe((data: any[]) => {
+      if (data.length < 100) {
+        this.endOfData = true;
+      }
+      this.tableData = [...this.tableData, ...data];
+      this.numberOfPages = Math.ceil((this.tableData.length) / this.pageSize);
+      this.navigateToPage(this.currentPage);
+    });
+  }
 
+  setPaginationLimits(pgno, pgsize) {
+    this.finalUrl = this.paginationUrl + '?pgno=' + pgno + '&pgsize=' + pgsize;
   }
 
   concatenatedName(item, detailsOfProperties) {
@@ -66,52 +88,9 @@ export class DataTableComponent implements OnInit, OnChanges, AfterViewInit {
     return item[valueProperty];
   }
 
-  counter() {
-    if (this.numberOfPages <= 5) {
-      return new Array(this.numberOfPages);
-    } else {
-      return new Array(5);
-    }
-  }
-
-  paginatedtableData() {
-    const startPoint = this.currentPage * this.pageSize;
-    const endPoint = startPoint + this.pageSize;
-    if (this.tableData) {
-      return this.tableData.slice(startPoint, endPoint);
-    }
-
-  }
 
   itemId(rowNumber) {
-    return this.pageSize * (this.currentPage) + rowNumber + 1;
-  }
-
-  navigateUsingPreviousOrNext(navigationDirection: String) {
-    if (navigationDirection === 'previous' && this.currentPage > 0) {
-      if (this.currentPage > 5 && this.currentPage <= (this.numberOfPages - 2)) {
-        --this.scrollTracker;
-      }
-      --this.currentPage;
-    } else if (navigationDirection === 'next' && this.currentPage < (this.numberOfPages - 1)) {
-      if (this.currentPage >= 5 && this.currentPage < (this.numberOfPages - 2)) {
-        ++this.scrollTracker;
-      }
-      ++this.currentPage;
-    }
-    console.log('scroll : ' + this.scrollTracker + '  current : ' + this.currentPage);
-  }
-
-  jumpToAPage(newPage: String) {
-    this.currentPage = newPage;
-    if (this.currentPage >= 5 && this.currentPage <= (this.numberOfPages - 2)) {
-      this.scrollTracker = newPage;
-    } else if (this.currentPage < 5) {
-      this.scrollTracker = 5;
-    } else if (this.currentPage > this.numberOfPages - 2 && this.currentPage > 5) {
-      this.scrollTracker = this.numberOfPages - 2;
-    }
-    console.log('scroll : ' + this.scrollTracker + '  current : ' + this.currentPage);
+    return this.pageSize * (this.currentPage - 1) + rowNumber + 1;
   }
 
   updateData(event, rowNumber: number, columnNumber) {
@@ -144,10 +123,19 @@ export class DataTableComponent implements OnInit, OnChanges, AfterViewInit {
 
   buttonClickEmitter(event, rowNumber, columnNumber) {
     const emittedObject = {
-      selectedObject: (this.currentPage * this.pageSize + rowNumber),
+      selectedObject: (this.itemId(rowNumber) - 1),
       actionName: this.tableDataDetails[columnNumber].elementDesc
     };
     this.buttonClickEvent.emit(emittedObject);
   }
 
+  navigateToPage(page: number) {
+    this.paginationDetails = this.pagerService.getPager(this.tableData.length, page);
+    this.paginatedItems = this.tableData.slice(this.paginationDetails.startIndex, this.paginationDetails.endIndex + 1);
+    this.currentPage = this.paginationDetails.currentPage;
+    console.log(this.paginationDetails);
+    if (this.paginationDetails.endPage === this.paginationDetails.currentPage) {
+      this.getTableDataObservable();
+    }
+  }
 }

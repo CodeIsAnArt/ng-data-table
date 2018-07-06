@@ -10,17 +10,17 @@
       </thead>
 
       <tbody>
-      <tr *ngFor="let item of paginatedtableData(); let rowNumber = index" #trow>
+      <tr *ngFor="let item of paginatedItems; let rowNumber = index" #trow>
         <td *ngFor="let itemDetail of tableDataDetails; let columnNumber = index">
           <span *ngIf="!itemDetail.type">{{concatenatedName(item, itemDetail)}}</span>
           <span *ngIf="itemDetail.type === 'id'">{{itemId(rowNumber)}}</span>
           <input [type]="itemDetail.subType" *ngIf="itemDetail.type === 'input' && itemDetail.subType!='radio'"
                  (change)="updateData($event,rowNumber,columnNumber)"
-                 [ngModel]="tableData[currentPage*pageSize + rowNumber][tableDataDetails[columnNumber].name]"
-                 [checked]="tableData[currentPage*pageSize + rowNumber][tableDataDetails[columnNumber].name]">
+                 [ngModel]="tableData[itemId(rowNumber)-1][tableDataDetails[columnNumber].name]"
+                 [checked]="tableData[itemId(rowNumber)-1][tableDataDetails[columnNumber].name]">
           <input [type]="itemDetail.subType" *ngIf="itemDetail.type === 'input' && itemDetail.subType ==='radio'"
                  name="radio" (change)="updateData($event,rowNumber,columnNumber)"
-                 [checked]="tableData[currentPage*pageSize + rowNumber][tableDataDetails[columnNumber].name]">
+                 [checked]="tableData[itemId(rowNumber)-1][tableDataDetails[columnNumber].name]">
           <button class="link-like" [type]="itemDetail.subType" *ngIf="itemDetail.type === 'button'"
                   (click)="buttonClickEmitter($event,rowNumber, columnNumber)">{{itemDetail.elementDesc}}
           </button>
@@ -31,28 +31,25 @@
 
   <!--Pagination-->
   <nav aria-label="..." class="center-elements pagination-bar">
-    <ul class="pagination pagination-custom">
-      <li [class.disabled]="currentPage===0" (click)="navigateUsingPreviousOrNext('previous')">
-        <span class="page-link">Previous</span>
+    <!-- paginationDetails -->
+    <ul *ngIf="paginationDetails.pages && paginationDetails.pages.length" class="pagination">
+      <li [ngClass]="{disabled:paginationDetails.currentPage === 1}">
+        <a (click)="navigateToPage(1)">First</a>
       </li>
-      <li *ngFor="let count of counter(); let i = index" [class.active]="currentPage === (i)" (click)="jumpToAPage(i)">
-        <a class="page-link" href="#">{{i + 1}}</a>
+      <li [ngClass]="{disabled:paginationDetails.currentPage === 1}">
+        <a (click)="navigateToPage(paginationDetails.currentPage - 1)">Previous</a>
       </li>
-      <li *ngIf="scrollTracker>5">
-        <a class="page-link" href="#">...</a>
+      <li *ngFor="let page of paginationDetails.pages" [ngClass]="{active:paginationDetails.currentPage === page}">
+        <a (click)="navigateToPage(page)">{{page}}</a>
       </li>
-      <li *ngIf="numberOfPages>5" [class.active]="currentPage === (scrollTracker)" (click)="jumpToAPage(scrollTracker)">
-        <a class="page-link" href="#">{{1 + scrollTracker}}</a>
+      <li *ngIf="!endOfData">
+        <a (click)="navigateToPage(paginationDetails.totalPages)">...</a>
       </li>
-      <li *ngIf="scrollTracker< (numberOfPages-2)">
-        <a class="page-link" href="#">...</a>
+      <li [ngClass]="{disabled:paginationDetails.currentPage === paginationDetails.totalPages}">
+        <a (click)="navigateToPage(paginationDetails.currentPage + 1)">Next</a>
       </li>
-      <li *ngIf="numberOfPages>6" [class.active]="currentPage === (numberOfPages-1)"
-          (click)="jumpToAPage(numberOfPages-1)">
-        <a class="page-link" href="#">{{numberOfPages}}</a>
-      </li>
-      <li [class.disabled]="currentPage===numberOfPages-1" (click)="navigateUsingPreviousOrNext('next')">
-        <span class="page-link">Next</span>
+      <li [ngClass]="{disabled:paginationDetails.currentPage === paginationDetails.totalPages}">
+        <a (click)="navigateToPage(paginationDetails.totalPages)">Last</a>
       </li>
     </ul>
   </nav>

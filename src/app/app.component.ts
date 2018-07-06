@@ -10,30 +10,30 @@ import { delay } from 'rxjs/operators';
 })
 export class AppComponent implements OnInit {
   public tableData;
-  public url = 'http://www.json-generator.com/api/json/get/cfTGUZqOZK?indent=2';
-  public obs = this.http.get(this.url);
-  public delayedObservable = this.http.get(this.url).pipe(delay(5000));
-  public pageSize = 50;
+  public paginationUrl = 'http://www.json-generator.com/api/json/get/cePNTSZYuq?indent=2';
+  // public obs = this.http.get(this.url);
+  // public delayedObservable = this.http.get(this.url).pipe(delay(5000));
+  public pageSize = 10;
   public tableHeadersList: String[] = ['Id', 'Allot Acc', 'Dep Ind', 'Fac Desc', 'IpaId', 'RCD', 'Enter', 'Submit'];
   public tableDataDetails = [{
     'name': 'id',
     'type': 'id',
     'root': ''
-  }, {
-    'name': 'setOrNotRadiobox',
-    'type': 'input',
-    'subType': 'radio',
-    'root': ''
-  }, {
+  },{
     'name': '_id',
     'type': '',
+    'root': ''
+  },{
+    'name': 'isActive',
+    'type': 'input',
+    'subType': 'checkbox',
     'root': ''
   }, {
     'name': 'setOrNotCheckbox',
     'type': 'button',
     'subType': 'button',
     'root': '',
-    'elementDesc': 'Edit'
+    'elementDesc': 'hi'
   }, {
     'name': 'company',
     'type': '',
@@ -58,9 +58,9 @@ export class AppComponent implements OnInit {
   }];
 
   ngOnInit() {
-    this.obs.subscribe(data => {
-      this.tableData = data;
-    });
+    // this.obs.subscribe(data => {
+    //   this.tableData = data;
+    // });
 
   }
 

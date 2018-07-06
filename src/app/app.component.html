@@ -1,11 +1,11 @@
 <div class="test">
   <app-data-table
     (actionButton)=ButtonListener($event)
-    [(tableData)]="tableData"
     [tableDataDetails]="tableDataDetails"
     [tableHeadersList]="tableHeadersList"
     (buttonClickEvent)="ButtonListener($event)"
-    [pageSize]="pageSize">
+    [pageSize]="pageSize"
+    [paginationUrl] = "paginationUrl">
   </app-data-table>
 </div>
 <!--<div class="topright topright2">-->
