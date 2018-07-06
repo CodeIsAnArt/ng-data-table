@@ -43,7 +43,8 @@
         <a (click)="navigateToPage(page)">{{page}}</a>
       </li>
       <li *ngIf="!endOfData">
-          <a (click)="navigateToPage(paginationDetails.totalPages)" class="animate-loading">
+          <a (click)="navigateToPage(paginationDetails.totalPages)"
+             [ngClass]="{'animate-loading':callInPProgress}">
             <span>.</span><span>.</span><span>.</span>
           </a>
       </li>

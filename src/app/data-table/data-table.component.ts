@@ -39,7 +39,7 @@ export class DataTableComponent implements OnInit, OnChanges {
   public paginationDetails: any = {};
   public paginatedItems: any[];
   public currentPage = 1;
-
+  public callInPProgress = true;
   ngOnInit(): void {
 
     this.columnWidths = new Array(this.tableDataDetails.length);
@@ -60,6 +60,7 @@ export class DataTableComponent implements OnInit, OnChanges {
   }
 
   getTableDataObservable() {
+    this.callInPProgress = true;
     this.setPaginationLimits((this.currentServerPage), this.serverPageSize);
     this.http.get(this.paginationUrl).subscribe((data: any[]) => {
       if (data.length < 100) {
@@ -68,6 +69,7 @@ export class DataTableComponent implements OnInit, OnChanges {
       this.tableData = [...this.tableData, ...data];
       this.numberOfPages = Math.ceil((this.tableData.length) / this.pageSize);
       this.navigateToPage(this.currentPage);
+      this.callInPProgress = false;
     });
   }
 
