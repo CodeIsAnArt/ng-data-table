@@ -43,7 +43,9 @@
         <a (click)="navigateToPage(page)">{{page}}</a>
       </li>
       <li *ngIf="!endOfData">
-        <a (click)="navigateToPage(paginationDetails.totalPages)">...</a>
+          <a (click)="navigateToPage(paginationDetails.totalPages)" class="animate-loading">
+            <span>.</span><span>.</span><span>.</span>
+          </a>
       </li>
       <li [ngClass]="{disabled:paginationDetails.currentPage === paginationDetails.totalPages}">
         <a (click)="navigateToPage(paginationDetails.currentPage + 1)">Next</a>
